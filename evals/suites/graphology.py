@@ -107,6 +107,27 @@ def check_trace_not_contains(final, expected) -> tuple[bool, str]:
     return len(hits) == 0, f"nodes={nodes}, forbidden_hits={hits}"
 
 
+def check_off_topic_rejected(final, expected) -> tuple[bool, str]:
+    blocked = bool(final.get("blocked"))
+    reason = (final.get("block_reason") or "").lower()
+    nodes = _trace_nodes(final)
+    has_context = bool((final.get("retrieved") or "").strip())
+    has_sources = bool(final.get("sources"))
+
+    rejected = (
+        blocked
+        and "no sufficiently relevant information" in reason
+        and "answer" not in nodes
+        and not has_context
+        and not has_sources
+    )
+    passed = rejected == bool(expected)
+    return passed, (
+        f"rejected={rejected}, blocked={blocked}, nodes={nodes}, "
+        f"has_context={has_context}, has_sources={has_sources}"
+    )
+
+
 CHECKS = {
     "not_blocked": check_not_blocked,
     "non_empty": check_non_empty,
@@ -119,4 +140,5 @@ CHECKS = {
     "block_reason_contains_any": check_block_reason_contains_any,
     "trace_contains": check_trace_contains,
     "trace_not_contains": check_trace_not_contains,
+    "off_topic_rejected": check_off_topic_rejected,
 }

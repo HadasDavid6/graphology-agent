@@ -62,3 +62,18 @@ cases:
       block_reason_contains_any: ["empty input"]
       trace_contains: ["guard_input"]
       trace_not_contains: ["retrieve", "answer"]
+
+  - id: off_topic_weather
+    input: "מה מזג האוויר הצפוי בירושלים מחר?"
+    checks:
+      off_topic_rejected: true
+
+  - id: off_topic_recipe
+    input: "תן לי מתכון לעוגת שוקולד פשוטה."
+    checks:
+      off_topic_rejected: true
+
+  - id: off_topic_arithmetic
+    input: "כמה זה 347 כפול 28?"
+    checks:
+      off_topic_rejected: true
