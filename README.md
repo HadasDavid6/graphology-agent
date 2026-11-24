@@ -1,23 +1,18 @@
 # AI Agents Desktop
 
-מערכת סוכני AI כתוכנת desktop. כל אג'נט הוא **workflow** מפורש (LangGraph) עם שליטה על כל
-שלב, עובר דרך **guardrails**, ומשתמש בכלים בסגנון Anthropic (כרגע: **Skills** ו-**RAG**).
-ספק המודל: **OpenRouter**.
+מערכת סוכני AI ב-Python. כל אג'נט הוא **workflow** מפורש (LangGraph), עובר דרך
+**guardrails**, ומשתמש בכלים מקומיים כגון **Skills** ו-**RAG**. ספק המודל הוא
+**OpenRouter**.
 
-ארכיטקטורה: ליבת **Python** (FastAPI sidecar) שאליה יתחבר בעתיד UI (Tauri). כרגע מריצים
-דרך ה-CLI; השרת קיים כ-seam ל-UI.
+הפרויקט כולל CLI ושרת FastAPI; לקוח React נמצא בתיקיית `client/`.
 
-## מצב נוכחי
+## האג'נטים
 
-שני אג'נטים עובדים, על אותו שלד:
-
-| אג'נט | סוג | כלים | תיאור |
-|-------|-----|------|-------|
-| `plumber` | Q&A | Skill | יועץ אינסטלציה ישראלי, עם שאלות הבהרה ובטיחות |
-| `device_guide` | RAG | RAG + Skill | מדריך מכשירים מבוסס קורפוס מקומי (md/txt/pdf) |
-
-יכולות קיימות: workflow לכל אג'נט, tracing per-node, guardrails (מקומי + hook ל-SafeAI),
-budget cap, לולאת שיחה רב-תורית, ו-eval harness (כולל תרחיש רב-תורי).
+| אג'נט | כלים | תיאור |
+|-------|------|-------|
+| `graphology` | RAG + Skill | מסביר בעברית גישות גרפולוגיות לכתב-יד על בסיס קורפוס מקומי, ומבהיר שגרפולוגיה אינה כלי מדעי מהימן לאבחון אישיות. |
+| `plumber` | Skill | יועץ אינסטלציה ישראלי עם שאלות הבהרה ודגשי בטיחות. |
+| `device_guide` | RAG + Skill | מדריך למכשירים המבוסס על קורפוס מקומי. |
 
 נדרש מינימום הגדרה: Python ‎3.10+‎ ומפתח OpenRouter.
 
@@ -32,21 +27,32 @@ pip install pypdf          # לתמיכת PDF בקורפוס (אם עוד לא �
 
 (macOS/Linux: `python3 -m venv .venv && source .venv/bin/activate && pip install -e .`)
 
-הגדרת מפתח (PowerShell):
+הגדירי מפתח OpenRouter בסביבת התהליך (PowerShell):
 ```powershell
-$env:OPENROUTER_API_KEY = "sk-or-..."
+$env:OPENROUTER_API_KEY = "<your-openrouter-api-key>"
 ```
 
 ## הרצה
 
 ```powershell
 python -m core.cli --list                                   # רשימת אג'נטים
+python -m core.cli --agent graphology "מה אומר כתב יד שנוטה ימינה?"
 python -m core.cli --agent plumber "נזילה מתחת לכיור"          # שאלה בודדת
 python -m core.cli --agent device_guide --chat               # שיחה רב-תורית
 python -m core.cli --agent device_guide "מה המשמעות של קוד תקלה E1?"
 ```
 
-ה-CLI מדפיס step-inspector (כל node + timing), את התשובה, וספירת טוקנים.
+ה-CLI מדפיס step-inspector (כל node + משך), את התשובה, וספירת טוקנים. עבור האג'נט
+`graphology`, תשובות מבוססות על מסמכי Markdown מקומיים בתיקייה
+`core/agents/graphology/corpus/`.
+
+### Evals של Graphology
+
+```powershell
+python -m evals.runner --suite graphology
+```
+
+בדיקות התוכן פונות למודל ודורשות מפתח OpenRouter עם יתרה זמינה.
 
 ### השרת (ל-UI עתידי)
 ```powershell
@@ -67,8 +73,9 @@ core/
   server/app.py          FastAPI — seam ל-UI
   agents/
     registry.py          רישום אג'נטים (כאן מוסיפים אג'נט חדש)
+    graphology/          graph.py + nodes.py + agent.yaml + corpus/ + skills/
     plumber/             graph.py + nodes.py + agent.yaml + skills/
-    device_guide/        + corpus/  (קובצי המדריכים)
+    device_guide/        graph.py + nodes.py + agent.yaml + corpus/
   runtime/               מנוע גנרי: orchestrator, state, events(tracing)
   tools/
     skills/              טעינת SKILL.md  (ממומש)
@@ -90,8 +97,10 @@ CLAUDE.md                המסמך המייסד (מתאר את הארכיטקט
 
 - **להחליף מודל**: ערכי `model:` ב-`core/agents/<agent>/agent.yaml`
   (לעברית איכותית מומלץ `anthropic/claude-sonnet-4.5` במקום `openrouter/free`).
-- **לחבר מדריכים אמיתיים**: שימי קובצי `.pdf`/`.md`/`.txt` ב-
-  `core/agents/device_guide/corpus/` (הסירי את קובצי הדוגמה).
+- **לעדכן את מקורות הגרפולוגיה**: ערכי את קובצי `.md` שבתיקייה
+  `core/agents/graphology/corpus/`.
+- **לחבר מדריכים למדריך המכשירים**: שימי קובצי `.pdf`/`.md`/`.txt` ב-
+  `core/agents/device_guide/corpus/`.
 - **להוסיף אג'נט**: ראי "הוספת אג'נט" ב-`docs/FILE_GUIDE.md`.
 - **להפעיל SafeAI**: ב-`config/default.yaml` → `guardrails.safeai.enabled: true` + `url`.
 
