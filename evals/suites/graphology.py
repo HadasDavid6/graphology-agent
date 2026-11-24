@@ -110,6 +110,7 @@ def check_trace_not_contains(final, expected) -> tuple[bool, str]:
 def check_off_topic_rejected(final, expected) -> tuple[bool, str]:
     blocked = bool(final.get("blocked"))
     reason = (final.get("block_reason") or "").lower()
+    answer = final.get("final_answer") or ""
     nodes = _trace_nodes(final)
     has_context = bool((final.get("retrieved") or "").strip())
     has_sources = bool(final.get("sources"))
@@ -117,7 +118,8 @@ def check_off_topic_rejected(final, expected) -> tuple[bool, str]:
 
     rejected = (
         blocked
-        and "no sufficiently relevant information" in reason
+        and "outside the graphology domain" in reason
+        and "חורגת מתחום הגרפולוגיה" in answer
         and "answer" not in nodes
         and not has_context
         and not has_sources
@@ -125,7 +127,7 @@ def check_off_topic_rejected(final, expected) -> tuple[bool, str]:
     )
     passed = rejected == bool(expected)
     return passed, (
-        f"rejected={rejected}, blocked={blocked}, nodes={nodes}, "
+        f"rejected={rejected}, blocked={blocked}, reason={reason!r}, nodes={nodes}, "
         f"has_context={has_context}, has_sources={has_sources}, "
         f"embedding_tokens={embedding_tokens}"
     )

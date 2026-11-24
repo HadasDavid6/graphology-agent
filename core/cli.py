@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import argparse
 import getpass
+import os
 import sys
 
 from core.agents.registry import get_agent, list_agents
@@ -21,6 +22,9 @@ from core.security.api_keys import clear_key, resolve_openrouter_key, store_key
 from dotenv import load_dotenv
 load_dotenv()
 
+if os.getenv("LANGSMITH_TRACING", "").lower() == "true":
+    os.environ.setdefault("USE_DAEMON", "true")
+
     
 def _print_event(ev: dict) -> None:
     if ev["type"] == "node_start":
@@ -28,6 +32,14 @@ def _print_event(ev: dict) -> None:
     elif ev["type"] == "node_end":
         status = "ok" if ev["ok"] else f"ERROR: {ev['error']}"
         print(f"  ✔ {ev['node']}  ({ev['duration_ms']} ms)  [{status}]", flush=True)
+
+
+def _close_langsmith_client() -> None:
+    if os.getenv("LANGSMITH_TRACING", "").lower() == "true":
+        from langchain_core.tracers.langchain import get_client
+
+        get_client().close(timeout=10)
+
 
 def chat_loop(agent_name: str, mock: bool | None, *, api_key: str | None = None) -> int:
     """Multi-turn conversation loop. History is held here and passed into each turn,
@@ -99,7 +111,10 @@ def main(argv: list[str] | None = None) -> int:
         print("ℹ️  OPENROUTER_API_KEY not set — running in MOCK mode.\n")
 
     if args.chat:
-        return chat_loop(args.agent, mock, api_key=args.api_key)
+        try:
+            return chat_loop(args.agent, mock, api_key=args.api_key)
+        finally:
+            _close_langsmith_client()
 
     if not args.question:
         p.error("a question is required (or use --chat / --list)")
@@ -108,7 +123,12 @@ def main(argv: list[str] | None = None) -> int:
 
     print(f"=== running agent: {agent.name} ===")
     print("--- step inspector ---")
-    final = run_agent(agent, args.question, api_key=args.api_key, on_event=_print_event)
+    try:
+        final = run_agent(
+            agent, args.question, api_key=args.api_key, on_event=_print_event
+        )
+    finally:
+        _close_langsmith_client()
 
     print("\n--- answer ---")
     print(final.get("final_answer", "(no answer)"))

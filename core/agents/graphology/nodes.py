@@ -141,8 +141,11 @@ def retrieve(
     if not _is_graphology_query(state["user_input"]):
         return {
             "blocked": True,
-            "block_reason": "No sufficiently relevant information in corpus.",
-            "final_answer": "אני יכולה לענות רק על שאלות בנושא גרפולוגיה וכתב-יד.",
+            "block_reason": "Question is outside the graphology domain.",
+            "final_answer": (
+                "השאלה חורגת מתחום הגרפולוגיה, ולכן אני לא יכולה לענות עליה. "
+                "אני יכולה לעזור בשאלות על פרשנויות גרפולוגיות של כתב-יד."
+            ),
             "retrieved": "",
             "sources": [],
         }
@@ -177,7 +180,11 @@ def retrieve(
         return {
             "blocked": True,
             "block_reason": "No sufficiently relevant information in corpus.",
-            "final_answer": "לא נמצא מידע רלוונטי בקורפוס הגרפולוגיה. נסי לשאול שוב בצורה אחרת.",
+            "final_answer": (
+                "לא מצאתי מידע מתאים לשאלה במדריך הגרפולוגיה המקומי, "
+                "ולכן אני לא יכולה לענות עליה על סמך המקורות. "
+                "אפשר לשאול על שיפוע הכתב, רווחים, לחץ העט או צורות האותיות."
+            ),
             "retrieved": "",
             "sources": [],
             "usage": usage,
