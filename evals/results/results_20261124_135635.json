@@ -1,0 +1,78 @@
+{
+  "suite": "graphology",
+  "timestamp": "2026-11-24T11:56:35.218893+00:00",
+  "models": [
+    {
+      "suite": "graphology",
+      "model": "openrouter/auto",
+      "mode": "real",
+      "total_cases": 10,
+      "passed_cases": 10,
+      "total_checks": 40,
+      "passed_checks": 40,
+      "failed_checks": 0,
+      "pass_rate": 1.0,
+      "input_tokens": 8201,
+      "output_tokens": 3126,
+      "embedding_tokens": 255,
+      "total_tokens": 11582,
+      "completion_cost_usd": 0.053189,
+      "embedding_cost_usd": 3.315e-05,
+      "total_cost_usd": 0.05322215,
+      "cost_per_success": 0.005322215,
+      "total_latency_seconds": 41.637059200089425,
+      "latency": 4.163705920008942,
+      "avg_latency_seconds": 4.163705920008942,
+      "retrieval_seconds": 5.465955100487918,
+      "generation_seconds": 35.79812020016834,
+      "success": true
+    },
+    {
+      "suite": "graphology",
+      "model": "anthropic/claude-sonnet-4.5",
+      "mode": "real",
+      "total_cases": 10,
+      "passed_cases": 10,
+      "total_checks": 40,
+      "passed_checks": 40,
+      "failed_checks": 0,
+      "pass_rate": 1.0,
+      "input_tokens": 10451,
+      "output_tokens": 2358,
+      "embedding_tokens": 255,
+      "total_tokens": 13064,
+      "completion_cost_usd": 0.066723,
+      "embedding_cost_usd": 3.315e-05,
+      "total_cost_usd": 0.06675615,
+      "cost_per_success": 0.006675615,
+      "total_latency_seconds": 56.55868980009109,
+      "latency": 5.655868980009108,
+      "avg_latency_seconds": 5.655868980009108,
+      "retrieval_seconds": 4.694843599572778,
+      "generation_seconds": 51.66310459980741,
+      "success": true
+    }
+  ],
+  "comparison": [
+    {
+      "model": "openrouter/auto",
+      "passed_checks": 40,
+      "total_checks": 40,
+      "pass_rate": 1.0,
+      "total_tokens": 11582,
+      "total_cost_usd": 0.05322215,
+      "avg_latency_seconds": 4.163705920008942,
+      "success": true
+    },
+    {
+      "model": "anthropic/claude-sonnet-4.5",
+      "passed_checks": 40,
+      "total_checks": 40,
+      "pass_rate": 1.0,
+      "total_tokens": 13064,
+      "total_cost_usd": 0.06675615,
+      "avg_latency_seconds": 5.655868980009108,
+      "success": true
+    }
+  ]
+}
