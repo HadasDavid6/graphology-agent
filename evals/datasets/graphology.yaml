@@ -68,6 +68,11 @@ cases:
     checks:
       off_topic_rejected: true
 
+  - id: off_topic_weather_today
+    input: "מה מזג האויר היום"
+    checks:
+      off_topic_rejected: true
+
   - id: off_topic_recipe
     input: "תן לי מתכון לעוגת שוקולד פשוטה."
     checks:

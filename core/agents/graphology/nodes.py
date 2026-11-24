@@ -37,11 +37,25 @@ _MOCK_DOMAIN_TERMS = {
     "חתימה", "שורה", "אישיות",
 }
 
+_DOMAIN_QUERY_TERMS = {
+    "גרפולוג", "כתב", "כתיב", "אות", "שיפוע", "נטייה", "נטיה", "רווח",
+    "לחץ", "חתימ", "שורה", "אישיות",
+}
+
 
 def _system_prompt(skills_text: str) -> str:
     if skills_text:
         return SYSTEM_PROMPT + "\n\n" + skills_text
     return SYSTEM_PROMPT
+
+
+def _is_graphology_query(query: str) -> bool:
+    terms = tokenize(query)
+    return any(
+        term.startswith(domain_term) or domain_term.startswith(term)
+        for term in terms
+        for domain_term in _DOMAIN_QUERY_TERMS
+    )
 
 
 def _number(value) -> float:
@@ -124,6 +138,15 @@ def retrieve(
     mock: bool | None = None,
 ) -> dict:
     """Retrieve relevant chunks and record embedding usage and duration."""
+    if not _is_graphology_query(state["user_input"]):
+        return {
+            "blocked": True,
+            "block_reason": "No sufficiently relevant information in corpus.",
+            "final_answer": "אני יכולה לענות רק על שאלות בנושא גרפולוגיה וכתב-יד.",
+            "retrieved": "",
+            "sources": [],
+        }
+
     started = perf_counter()
 
     provider = OpenRouterProvider(

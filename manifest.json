@@ -1,6 +1,6 @@
 {
   "name": "Graphology Agent",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Hebrew-language assistant that explains graphological traditions about handwriting using a local reference corpus, while clearly distinguishing those interpretations from scientifically validated assessments.",
   "creator_name": "Hadas David",
   "contact_information": "support@safeai613.com",
@@ -39,7 +39,7 @@
     "graph_id": "graphology",
     "graph_entry": "core.agents.graphology.graph:make_agent",
     "python": ">=3.10",
-    "source_url": "https://github.com/HadasDavid6/graphology-agent/archive/refs/tags/v1.0.1.zip",
+    "source_url": "https://github.com/HadasDavid6/graphology-agent/archive/refs/tags/v1.0.2.zip",
     "input_schema": "messages",
     "accepts_files": [],
     "hitl": false,

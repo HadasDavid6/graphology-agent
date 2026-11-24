@@ -113,6 +113,7 @@ def check_off_topic_rejected(final, expected) -> tuple[bool, str]:
     nodes = _trace_nodes(final)
     has_context = bool((final.get("retrieved") or "").strip())
     has_sources = bool(final.get("sources"))
+    embedding_tokens = (final.get("usage") or {}).get("embedding_tokens", 0)
 
     rejected = (
         blocked
@@ -120,11 +121,13 @@ def check_off_topic_rejected(final, expected) -> tuple[bool, str]:
         and "answer" not in nodes
         and not has_context
         and not has_sources
+        and not embedding_tokens
     )
     passed = rejected == bool(expected)
     return passed, (
         f"rejected={rejected}, blocked={blocked}, nodes={nodes}, "
-        f"has_context={has_context}, has_sources={has_sources}"
+        f"has_context={has_context}, has_sources={has_sources}, "
+        f"embedding_tokens={embedding_tokens}"
     )
 
 
