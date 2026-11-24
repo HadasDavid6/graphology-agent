@@ -1,0 +1,15 @@
+.env
+.env.*
+!.env.example
+
+.mess
+
+.venv
+__pycache__
+node_modules
+dist
+.rag_embeddings.json
+
+ai_agents_desktop.egg-info
+tmp_graphology_check.py
+tmp_import_test.py

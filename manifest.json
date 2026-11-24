@@ -1,0 +1,51 @@
+{
+  "name": "Graphology Agent",
+  "version": "1.0.0",
+  "description": "Hebrew-language assistant that explains graphological traditions about handwriting using a local reference corpus, while clearly distinguishing those interpretations from scientifically validated assessments.",
+  "creator_name": "Hadas David",
+  "contact_information": "support@safeai613.com",
+  "release_date": "2026-11-24",
+  "repository_url": "https://github.com/HadasDavid6/graphology-agent",
+  "target_audience": "Hebrew-speaking users interested in learning about graphology",
+  "professional_fields": [
+    "Graphology",
+    "Handwriting analysis"
+  ],
+  "tasks_capable_of_performing": [
+    "Explain traditional graphological interpretations of handwriting slant, spacing, pressure, letter size, signatures, and baseline using the local reference corpus.",
+    "Explain the limitations of graphology and clarify that handwriting analysis is not a reliable scientific, medical, or psychological diagnosis."
+  ],
+  "examples_of_suitable_questions": [
+    "מה אומר כתב יד שנוטה ימינה?",
+    "איך מפרשים רווח גדול בין מילים לפי גרפולוגיה?",
+    "מהן המגבלות של ניתוח כתב יד?"
+  ],
+  "technical_specifications": {
+    "framework": "LangGraph",
+    "llm_provider": "OpenRouter",
+    "supported_models": [
+      "openrouter/auto"
+    ],
+    "features_enabled": {
+      "rag": true,
+      "web_search": false,
+      "code_execution": false,
+      "mcp_support": false
+    },
+    "required_permissions": []
+  },
+  "runtime": {
+    "manifest_version": 1,
+    "graph_id": "graphology",
+    "graph_entry": "core.agents.graphology.graph:make_agent",
+    "python": ">=3.10",
+    "source_url": "https://github.com/HadasDavid6/graphology-agent/archive/refs/heads/main.zip",
+    "input_schema": "messages",
+    "accepts_files": [],
+    "hitl": false,
+    "env_optional": [
+      "OPENROUTER_API_KEY"
+    ],
+    "default_model": "openrouter/auto"
+  }
+}

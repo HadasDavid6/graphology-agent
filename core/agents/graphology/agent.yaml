@@ -1,0 +1,29 @@
+# Declarative config for the graphology agent.
+# Supports both text queries and image analysis (handwriting images)
+
+name: graphology
+display_name: "גרפולוגיה"
+description: "עונה רק על שאלות ניתוח כתב-יד ותכונות אישיות, בהסתמך על מדריך גרפולוגיה מקומי."
+
+model: "openrouter/auto"
+max_output_tokens: 900
+budget_tokens: 6000
+
+tools:
+  - rag
+
+rag:
+  corpus_dir: corpus
+  top_k: 5
+  embed_model: "text-embedding-3-large"
+  min_similarity: 0.12
+  min_score: 0.5
+
+skills:
+  - graphology
+
+gates: []
+
+guardrails:
+  input: true
+  output: true

@@ -1,0 +1,78 @@
+{
+  "suite": "graphology",
+  "timestamp": "2026-11-24T08:06:43.421069+00:00",
+  "models": [
+    {
+      "suite": "graphology",
+      "model": "openrouter/auto",
+      "mode": "real",
+      "total_cases": 6,
+      "passed_cases": 6,
+      "total_checks": 36,
+      "passed_checks": 36,
+      "failed_checks": 0,
+      "pass_rate": 1.0,
+      "input_tokens": 5921,
+      "output_tokens": 960,
+      "embedding_tokens": 255,
+      "total_tokens": 7136,
+      "completion_cost_usd": 0.0102206,
+      "embedding_cost_usd": 3.315e-05,
+      "total_cost_usd": 0.010253749999999999,
+      "cost_per_success": 0.0017089583333333332,
+      "total_latency_seconds": 31.64761979971081,
+      "latency": 5.274603299951802,
+      "avg_latency_seconds": 5.274603299951802,
+      "retrieval_seconds": 5.651355999521911,
+      "generation_seconds": 25.65238449955359,
+      "success": true
+    },
+    {
+      "suite": "graphology",
+      "model": "anthropic/claude-sonnet-4.5",
+      "mode": "real",
+      "total_cases": 6,
+      "passed_cases": 6,
+      "total_checks": 36,
+      "passed_checks": 36,
+      "failed_checks": 0,
+      "pass_rate": 1.0,
+      "input_tokens": 10451,
+      "output_tokens": 2692,
+      "embedding_tokens": 255,
+      "total_tokens": 13398,
+      "completion_cost_usd": 0.071733,
+      "embedding_cost_usd": 3.315e-05,
+      "total_cost_usd": 0.07176615,
+      "cost_per_success": 0.011961025,
+      "total_latency_seconds": 63.238742099609226,
+      "latency": 10.53979034993487,
+      "avg_latency_seconds": 10.53979034993487,
+      "retrieval_seconds": 4.476153499912471,
+      "generation_seconds": 58.64385660039261,
+      "success": true
+    }
+  ],
+  "comparison": [
+    {
+      "model": "openrouter/auto",
+      "passed_checks": 36,
+      "total_checks": 36,
+      "pass_rate": 1.0,
+      "total_tokens": 7136,
+      "total_cost_usd": 0.010253749999999999,
+      "avg_latency_seconds": 5.274603299951802,
+      "success": true
+    },
+    {
+      "model": "anthropic/claude-sonnet-4.5",
+      "passed_checks": 36,
+      "total_checks": 36,
+      "pass_rate": 1.0,
+      "total_tokens": 13398,
+      "total_cost_usd": 0.07176615,
+      "avg_latency_seconds": 10.53979034993487,
+      "success": true
+    }
+  ]
+}

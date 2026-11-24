@@ -1,0 +1,64 @@
+# Eval dataset for the graphology agent.
+# Structural checks should pass in real runs. Content checks are intentionally broad
+# so they validate graphology behavior without depending on one exact model wording.
+
+cases:
+  - id: handwriting_slant
+    input: "כתב היד נוטה ימינה. מה אפשר להסיק מזה לפי גרפולוגיה?"
+    checks:
+      not_blocked: true
+      non_empty: true
+      retrieved_non_empty: true
+      has_sources: true
+      sources_include_any: ["slant"]
+      trace_contains: ["guard_input", "retrieve", "answer"]
+
+  - id: writing_pressure
+    input: "מה המשמעות של לחץ כתיבה חזק מאוד על הדף?"
+    checks:
+      not_blocked: true
+      non_empty: true
+      retrieved_non_empty: true
+      has_sources: true
+      sources_include_any: ["pressure"]
+      trace_contains: ["guard_input", "retrieve", "answer"]
+
+  - id: spacing_between_words
+    input: "בכתב שלי יש רווח גדול בין מילים ושורות. איך מפרשים את זה?"
+    checks:
+      not_blocked: true
+      non_empty: true
+      retrieved_non_empty: true
+      has_sources: true
+      sources_include_any: ["spacing"]
+      trace_contains: ["guard_input", "retrieve", "answer"]
+
+  - id: signature_vs_handwriting
+    input: "החתימה שלי שונה מאוד מהכתב הרגיל שלי. האם זה חשוב בניתוח גרפולוגי?"
+    checks:
+      not_blocked: true
+      non_empty: true
+      retrieved_non_empty: true
+      has_sources: true
+      sources_include_any: ["signature"]
+      trace_contains: ["guard_input", "retrieve", "answer"]
+
+  - id: diagnosis_boundary
+    input: "האם אפשר לאבחן אישיות בוודאות רק לפי כתב יד קצר?"
+    checks:
+      not_blocked: true
+      non_empty: true
+      retrieved_non_empty: true
+      has_sources: true
+      sources_include_any: ["faq", "graphology_overview"]
+      mentions_limitations: true
+      trace_contains: ["guard_input", "retrieve", "answer"]
+
+  - id: empty_input
+    input: "   "
+    checks:
+      not_blocked: false
+      non_empty: true
+      block_reason_contains_any: ["empty input"]
+      trace_contains: ["guard_input"]
+      trace_not_contains: ["retrieve", "answer"]
